@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.8.3)
 project(vins)
 
 set(CMAKE_BUILD_TYPE "Release")
-set(CMAKE_CXX_FLAGS "-std=c++11")
+set(CMAKE_CXX_FLAGS "-std=c++14")
 #-DEIGEN_USE_MKL_ALL")
 set(CMAKE_CXX_FLAGS_RELEASE "-O3 -Wall -g")
 
@@ -59,6 +59,7 @@ catkin_package()
     
 add_library(vins_lib
     src/estimator/parameters.cpp
+    src/estimator/estimator.cpp
     src/estimator/feature_manager.cpp
     src/factor/pose_local_parameterization.cpp
     src/factor/projectionTwoFrameOneCamFactor.cpp
@@ -74,21 +75,18 @@ add_library(vins_lib
     src/initial/initial_ex_rotation.cpp
     src/featureTracker/feature_tracker.cpp)
 
-add_library(estimator_lib
-    src/estimator/estimator.cpp
-)
 target_link_libraries(vins_lib ${catkin_LIBRARIES} ${OpenCV_LIBS} ${CERES_LIBRARIES} dw)
 
 
 add_executable(vins_node src/rosNodeTest.cpp)
-target_link_libraries(vins_node vins_lib estimator_lib)
+target_link_libraries(vins_node vins_lib)
 
 add_library(vins_nodelet_lib src/rosNodelet.cpp)
-target_link_libraries(vins_nodelet_lib vins_lib estimator_lib)
+target_link_libraries(vins_nodelet_lib vins_lib)
 
 add_executable(kitti_odom_test src/KITTIOdomTest.cpp)
-target_link_libraries(kitti_odom_test vins_lib estimator_lib)
+target_link_libraries(kitti_odom_test vins_lib)
 
 # add_executable(kitti_gps_test src/KITTIGPSTest.cpp)
-# target_link_libraries(kitti_gps_test vins_lib estimator_lib)
+# target_link_libraries(kitti_gps_test vins_lib)
 

@@ -75,7 +75,7 @@ void Estimator::inputImage(double t, const cv::Mat &_img, const cv::Mat &_img1)
     sum_time += dt;
     img_track_count ++;
 
-    printf("featureTracker time: AVG %f NOW %f\n", sum_time/img_track_count, dt );
+    ROS_DEBUG("featureTracker time: AVG %f NOW %f\n", sum_time/img_track_count, dt );
     if(MULTIPLE_THREAD)  
     {     
         if(inputImageCnt % 2 == 0)
@@ -243,7 +243,7 @@ void Estimator::processMeasurements()
             double dt = t_process.toc();
             mea_sum_time += dt;
             mea_track_count ++;
-            printf("process measurement time: AVG %f NOW %f\n", mea_sum_time/mea_track_count, dt );
+            printf("\nprocess measurement time: AVG %f NOW %f\n", mea_sum_time/mea_track_count, dt );
         }
 
         if (! MULTIPLE_THREAD)
@@ -1092,8 +1092,8 @@ void Estimator::optimization()
     ceres::Solver::Summary summary;
     ceres::Solve(options, &problem, &summary);
     //cout << summary.BriefReport() << endl;
-    printf("Iterations : %d", static_cast<int>(summary.iterations.size()));
-    printf(" solver costs: %f \n", t_solver.toc());
+    ROS_DEBUG("Iterations : %d", static_cast<int>(summary.iterations.size()));
+    ROS_DEBUG("solver costs: %f \n", t_solver.toc());
 
     double2vector();
     //printf("frame_count: %d \n", frame_count);
@@ -1193,11 +1193,11 @@ void Estimator::optimization()
 
         TicToc t_pre_margin;
         marginalization_info->preMarginalize();
-        ROS_INFO("pre marginalization %f ms", t_pre_margin.toc());
+        ROS_DEBUG("pre marginalization %f ms", t_pre_margin.toc());
         
         TicToc t_margin;
         marginalization_info->marginalize();
-        ROS_INFO("marginalization %f ms", t_margin.toc());
+        ROS_DEBUG("marginalization %f ms", t_margin.toc());
 
         std::unordered_map<long, double *> addr_shift;
         for (int i = 1; i <= WINDOW_SIZE; i++)
@@ -1572,7 +1572,7 @@ void Estimator::updateLatestStates()
 
     latest_time = Headers[frame_count] + td;
     latest_P = Ps[frame_count];
-    std::cout << "Ps[frame_count] is " << Ps[frame_count].transpose();
+    std::cout << "Ps[frame_count] is " << Ps[frame_count].transpose() << endl;
     latest_Q = Rs[frame_count];
     latest_V = Vs[frame_count];
     latest_Ba = Bas[frame_count];

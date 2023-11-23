@@ -123,7 +123,7 @@ map<int, vector<pair<int, Eigen::Matrix<double, 7, 1>>>> FeatureTracker::trackIm
         cur_gpu_img = cv::cuda::GpuMat(_img);
         right_gpu_img = cv::cuda::GpuMat(_img1);
 
-        printf("gpumat cost: %fms\n",t_g.toc());
+        ROS_DEBUG("gpumat cost: %fms\n",t_g.toc());
 
         row = _img.rows;
         col = _img.cols;
@@ -519,7 +519,7 @@ map<int, vector<pair<int, Eigen::Matrix<double, 7, 1>>>> FeatureTracker::trackIm
         }
     }
 
-    printf("feature track whole time %f PTS %ld\n", t_r.toc(), cur_un_pts.size());
+    ROS_DEBUG("feature track whole time %f PTS %ld\n", t_r.toc(), cur_un_pts.size());
     return featureFrame;
 }
 
