@@ -1,0 +1,17 @@
+<!-- <launch>
+	<node name="vins_fusion" pkg="vins"  type="vins_node" output="screen" args="$(find vins)/../config/px4_rs_lite/px4_d435i.yaml"/> -->
+
+    <!-- <node name="rvizvisualisation" pkg="rviz" type="rviz" output="log" args="-d $(find vins)/../config/vins_rviz_config.rviz" /> -->
+
+	<!-- <node name="loop_fusion" pkg="loop_fusion"  type="loop_fusion_node" args="$(find vins)/../config/px4_rs/px4_d435i.yaml" output="screen"/> -->
+
+<!-- </launch>  -->
+
+<launch>
+    <arg name="manager"     default="/camera/realsense2_camera_manager"/>
+    <arg name="config_file" default="$(find vins)/../config/px4_rs/px4_d435i.yaml" />
+    <node pkg="nodelet" type="nodelet" name="vins_fusion_nodelet" 
+        args="load vins_nodelet_pkg/VinsNodeletClass $(arg manager)" output="screen" ns="vins_estimator">
+        <param name="config_file" type="string" value="$(arg config_file)"/>
+    </node> 
+</launch>
